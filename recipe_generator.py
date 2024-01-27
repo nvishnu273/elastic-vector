@@ -4,7 +4,7 @@ import json
 from openai import AzureOpenAI
 import azureopenai
 from app_config import AZURE_OPENAI_API_KEY, AZURE_ENDPOINT, AZURE_API_VERSION, DEPLOYED_MODEL_NAME
-from azure.identity import EnvironmentCredential, get_bearer_token_provider
+from azure.identity import DefaultAzureCredential, EnvironmentCredential, get_bearer_token_provider
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -25,7 +25,8 @@ class RecipeGenerator:
             "content": "Take the recipes information and generate a recipe with a mouthwatering intro and a step by step guide."
         }
         prompts.append(instruction)
-        token_provider = get_bearer_token_provider(EnvironmentCredential(), "https://cognitiveservices.azure.com/.default")
+        #https://learn.microsoft.com/en-us/python/api/azure-identity/azure.identity?view=azure-python
+        token_provider = get_bearer_token_provider(DefaultAzureCredential(), "https://cognitiveservices.azure.com/.default")
         client = AzureOpenAI(
             api_version=self.api_version,
             azure_endpoint=self.api_base,
