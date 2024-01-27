@@ -1,6 +1,8 @@
+import sys
 import os
 import json
-import AzureOpenAI
+from openai import AzureOpenAI
+import azureopenai
 from app_config import AZURE_OPENAI_API_KEY, AZURE_ENDPOINT, AZURE_API_VERSION, DEPLOYED_MODEL_NAME
 from azure.identity import DefaultAzureCredential, get_bearer_token_provider
 
@@ -11,7 +13,8 @@ class RecipeGenerator:
         self.api_version=AZURE_API_VERSION,
         self.api_base=AZURE_ENDPOINT
         self.api_type = "azure"
-        self.deployment_name = DEPLOYED_MODEL_NAME        
+        self.deployment_name = DEPLOYED_MODEL_NAME
+
     def generate(self, recipe):
         prompts = [{"role": "user", "content": json.dumps(recipe)}]
         instruction = {
